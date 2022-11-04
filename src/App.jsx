@@ -1,20 +1,33 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
-import { WithReactQuery } from "./component/withReactQuery/withReactQuery";
+import { ProductDisplay } from "./component/withReactQuery/ProductDisplay";
 import { Info } from "./component/withReactQuery/info";
-import { Cart } from "./component/withReactQuery/cart";
+import { CartDrawer } from "./component/withReactQuery/cartDrawer";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 
-function App() {
+const ProductDisplayContainer = (
+  <div className="flex flex-col">
+    <Info />
+    <ProductDisplay />
+  </div>
+);
+
+const CartDisplay = (
+  <div className="flex flex-col">
+    <CartDrawer />
+  </div>
+);
+
+const App = () => {
   return (
     <div className="flex min-w-full justify-center items-center">
-      <div className="flex flex-col">
-        <Cart />
-        <Info />
-        <WithReactQuery />
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/products" element={ProductDisplayContainer} />
+          <Route path="/cart" element={CartDisplay} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;

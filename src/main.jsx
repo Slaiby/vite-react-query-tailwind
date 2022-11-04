@@ -6,14 +6,12 @@ import "./index.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 60000 } },
+  defaultOptions: { refetchOnWindowFocus: false, retry: false },
 });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  // <React.StrictMode>
   <QueryClientProvider client={queryClient}>
     <App />
     <ReactQueryDevtools initialIsOpen={false} />
   </QueryClientProvider>
-  // </React.StrictMode>
 );

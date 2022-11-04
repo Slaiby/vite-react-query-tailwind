@@ -1,17 +1,16 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { fetchProducts } from "../../fetchers/products";
 import { Product } from "./product";
 
-export function WithReactQuery() {
-  console.log("Render");
+export const ProductDisplay = () => {
+  console.log("Render product dispaly");
 
-  const { isError, isSuccess, isLoading, data, error } = useQuery(
-    ["products"],
-    fetchProducts,
-    { staleTime: 3000 }
-  );
+  const { isError, isSuccess, isLoading, data, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProducts,
+    refetchOnMount: false,
+    staleTime: 60 * 1000, // 1 minutes
+  });
 
   if (isLoading) {
     console.log("Loading...");
@@ -29,4 +28,4 @@ export function WithReactQuery() {
         data.map((product) => <Product key={product.id} product={product} />)}
     </div>
   );
-}
+};
