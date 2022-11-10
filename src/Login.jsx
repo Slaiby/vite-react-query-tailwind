@@ -1,21 +1,28 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
-import { useAuthState, useAuthDispatch, doLogin } from "./auth-context";
+import React, { useEffect, useState } from "react";
+import { useLocation, Navigate } from "react-router-dom";
+import {
+  useAuthState,
+  useAuthDispatch,
+  doLogin,
+  isAuthenticated,
+  doLogout,
+} from "./auth-context";
 
 function Login() {
   const { user: loggedUser, status, error } = useAuthState();
   const dispatch = useAuthDispatch();
-
-  const [user, setUser] = React.useState("");
-  const inputRef = React.useRef(null);
-
-  React.useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
-
-  if (loggedUser) return <Redirect to="/dashboard" />;
+  const location = useLocation();
+  const [user, setUser] = useState("");
+  // if (isAuthenticated()) {
+  //   doLogout(dispatch);
+  // }
+  // useEffect(() => {
+  //   if (isAuthenticated()) {
+  //     doLogout(dispatch);
+  //   }
+  // }, [user]);
+  if (loggedUser)
+    return <Navigate to="/dashboard" state={{ from: location }} replace />;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,19 +31,16 @@ function Login() {
   };
 
   const handleChange = (e) => setUser(e.target.value);
-
   return (
     <div>
       <ul>
-        <li>Usernames other than "foo" returns an error.</li>
-        <li>Each request takes 2 seconds and fires a spinner.</li>
+        <li>Usernames other than users of the system returns an error.</li>
         <li>After successful login, page is redirected to "Dashboard"</li>
       </ul>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name" />
           <input
-            ref={inputRef}
             type="text"
             name="name"
             id="name"

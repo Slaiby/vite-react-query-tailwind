@@ -50,6 +50,7 @@ function Navbar() {
         <CustomLink to="/" exact item="Home" />
         {loginButton}
         <CustomLink to="/dashboard" item="Dashboard" />
+        <CustomLink to="/cart" item="cart" />
       </ul>
       {userMessage}
     </nav>

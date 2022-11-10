@@ -11,12 +11,14 @@ export function CartDrawer(props) {
     queries: [
       {
         queryKey: ["cart"],
+        refetchOnMount: false,
         queryFn: fetchCart,
+        staleTime: 60 * 1000, // 1 minutes
       },
       {
         queryKey: ["products"],
         queryFn: fetchProducts,
-        refetchOnMount: false,
+        refetchOnMount: true,
         staleTime: 60 * 1000, // 1 minutes
       },
     ],

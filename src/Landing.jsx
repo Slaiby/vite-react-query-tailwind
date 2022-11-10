@@ -6,16 +6,15 @@ function Landing() {
     <div>
       <h3>Landing Page</h3>
       <hr />
-      <div>
-        If you try to go to{" "}
+      <div className="flex flex-col">
+        If you try to go to
         <Link to="/dashboard" className="simple-link">
           Dashboard
-        </Link>{" "}
-        without logging in, it redirects you to{" "}
+        </Link>
+        without logging in, it redirects you to
         <Link className="simple-link" to="/login">
-          Login
-        </Link>{" "}
-        page.
+          Login page.
+        </Link>
       </div>
     </div>
   );

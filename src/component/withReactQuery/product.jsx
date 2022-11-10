@@ -20,25 +20,36 @@ export function Product(props) {
   const queryClient = useQueryClient();
 
   //MUTATION (Add Product to Cart through API-POST)
-  const cartMutation = useMutation(
+  const { mutateAsync: addToCartMutation } = useMutation(
     (newProduct) => {
-      console.log("Run: ", newProduct);
-      return axios.post(`http://localhost:3000/cart`, newProduct);
+      return axios
+        .post(`http://localhost:3000/cart`, newProduct)
+        .then((res) => res.data);
     },
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["products"]);
-        queryClient.refetchQueries("products", { force: true });
+      onSuccess: async (newcartItem) => {
+        queryClient.setQueryData(["cart"], (old) => [...old, newcartItem]);
       },
     }
   );
 
+  const { mutateAsync: removeFromCart } = useMutation((cartId) => {
+    return queryClient.setQueryData(["cart"], (old) =>
+      old.filter((el) => el.id !== cartId?.id)
+    );
+  });
+
   const onAddToCart = (event) => {
     event.preventDefault();
-    cartMutation.mutate({ id });
+    addToCartMutation({ id });
   };
 
-  if (cartMutation.isLoading) return <div>Loading...</div>;
+  const onRemoveFromCart = (event) => {
+    event.preventDefault();
+    removeFromCart({ id });
+  };
+
+  if (addToCartMutation.isLoading) return <div>Loading...</div>;
 
   return (
     <div className="w-full max-w-sm bg-white rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
@@ -116,6 +127,13 @@ export function Product(props) {
             onClick={onAddToCart}
           >
             Add to cart
+          </a>
+          <a
+            href="#"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            onClick={onRemoveFromCart}
+          >
+            Remove
           </a>
         </div>
       </div>

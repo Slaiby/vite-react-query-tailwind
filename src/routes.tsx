@@ -4,11 +4,12 @@ import Navbar from "./Navbar";
 import Landing from "./Landing";
 import Login from "./Login";
 import Dashboard from "./Dashboard";
-import PrivateRoute from "./PrivateRoute";
+// import PrivateRoute from "./PrivateRoute";
+import RestrictedRoute from "./RestrictedRoute";
 import history from "./history";
 import { CartDrawer } from "./component/withReactQuery/cartDrawer";
 
-const CartDisplay = (
+const CartDisplay = () => (
   <div className="flex flex-col">
     <CartDrawer />
   </div>
@@ -19,9 +20,19 @@ const Routes = () => {
     <Router history={history}>
       <Navbar />
       <Switch>
-        <Route exact path="/" component={Landing} />
         <Route path="/login" component={Login} />
-        <PrivateRoute path="/dashboard" component={Dashboard} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/cart" component={CartDisplay} />
+        {/* <RestrictedRoute
+          path="/dashboard"
+          component={Dashboard}
+          rolesToShowFor={["admin"]}
+        />
+        <RestrictedRoute
+          path="/test"
+          component={CartDisplay}
+          rolesToShowFor={["Noob developer"]}
+        /> */}
       </Switch>
     </Router>
   );
